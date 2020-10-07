@@ -1,24 +1,23 @@
 /* ExitOnDoubleBack: Exits app when back button is pressed twice in the passed interval*/
 
-import getCurrentRouteName from '../helpers/getCurrentRoute';
+import { Component } from 'react';
+
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import {BackHandler, ToastAndroid, View} from 'react-native';
+import { BackHandler, ToastAndroid } from 'react-native';
+
+import getCurrentRouteName from '../helpers/getCurrentRoute';
 import noop from '../helpers/noop';
-import {Utils, debug} from '@utils'
 
 class ExitOnDoubleBack extends Component {
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     }
-
     timer = {
         ref: null,
         isTimerRunning: false
     }
     _handleExit = () => {
         if (this.props.showRating() === true) {
-            debug(" => _handleExit -> ")
             return true;
         } else {
             if (!this.timer.isTimerRunning) {
@@ -34,7 +33,7 @@ class ExitOnDoubleBack extends Component {
     }
 
     _handleBackPress = () => {
-        const {nav, backHandler} = this.props;
+        const { nav, backHandler } = this.props;
         const currentRoute = getCurrentRouteName(nav);
         if (this.props.exitableRoutes.includes(currentRoute)) { // exit the app from landing page
             return this._handleExit();
